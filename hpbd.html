@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Happy Birthday An!</title>
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap" rel="stylesheet">
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+            background-color: #000;
+            font-family: 'Roboto Condensed', sans-serif;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .footer {
+            position: fixed;
+            width: 100%;
+            text-align: center;
+            font-size: 8pt;
+            color: #999;
+            opacity: 0.5;
+            bottom: 24px;
+        }
+
+        #music {
+            justify-content: center;
+            text-align: center;
+            /* align buttons to center */
+        }
+
+        h2 {
+            color: yellow;
+            margin-bottom: 5px;
+        }
+
+        .button {
+            display: inline-block;
+            position: relative;
+            width: 100px;
+            height: 30px;
+            overflow: hidden;
+            border: none;
+            border-radius: 30px;
+            background-color: #1d54ad;
+            color: yellow;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            outline: none;
+            cursor: pointer;
+            margin-top: 1em;
+        }
+
+        .popup {
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+        }
+
+        #YES::before {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            content: 'SURE';
+            transition: all .1s;
+            background-color: palevioletred;
+        }
+
+        #YES::after {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            content: 'QUIET!';
+            transition: all .1s;
+        }
+
+        #YES:hover::before {
+            top: -60px;
+        }
+
+        #YES:hover::after {
+            top: 0;
+        }
+
+        #NO::before {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            content: 'NO!';
+            transition: all .1s;
+        }
+
+        #NO::after {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            content: 'OKEEE';
+            transition: all .1s;
+        }
+
+        #NO:hover::before {
+            top: -60px;
+        }
+
+        #NO:hover::after {
+            top: 0;
+            background-color: palevioletred;
+        }
+
+        #myPopupContent {
+            background-color: rgb(28, 35, 59);
+            width: 400px;
+            height: 150px;
+            margin: 150px auto;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        img {
+            height: 100%;
+            width: auto;
+            display: block;
+            margin: auto;
+        }
+
+        .footer {
+            font-size: 1rem;
+        }
+
+        #typing-effect {
+            display: inline-block;
+            font-size: 24px;
+            margin-top: 1em;
+            overflow: hidden;
+            white-space: nowrap;
+            width: 0;
+            animation: typing;
+            animation-duration: 3s;
+            animation-timing-function: steps(30, end);
+            animation-fill-mode: forwards;
+            color: yellow;
+            font-weight: bold;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0
+            }
+
+            to {
+                width: 100%
+            }
+        }
+    </style>
+</head>
+
+<body onload="ask4music()">
+    <script src="https://cdn.jsdelivr.net/npm/three@0.100.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.100.0/examples/js/controls/OrbitControls.js"></script>
+
+    <audio id="audio" src="ShiNi_MongNhien.mp3"></audio>
+
+    <div id="typing-effect"></div>
+
+    <div class="popup" id="myPopupMusic">
+        <div id="myPopupContent">
+            <h2>WANNA HEAR SOME MUSIC?</h2>
+            <button class="button" id="YES" onclick='answer("NO")'></button>
+            <button class="button" id="NO" onclick='answer("YES")'></button>
+        </div>
+    </div>
+
+    <div class="popup" id="angryimg">
+        <div id="myPopupContent">
+            <img src="./images/angry.png" alt="angry sticker">
+        </div>
+    </div>
+
+    <div class="footer">
+        This is a 3D object, you can spin it around.
+    </div>
+    <script>
+        function ask4music() {
+            const myPopupMusic = document.getElementById("myPopupMusic");
+            myPopupMusic.style.display = "block";
+        }
+
+        function answer(answer) {
+            const angryimg = document.getElementById("angryimg");
+            if (answer == "NO") {
+                angryimg.style.display = "block";
+                angryimg.addEventListener("click", () => {
+                    angryimg.style.display = "none";
+                    myPopupMusic.style.display = "none";
+                    drawheart();
+                });
+            }
+            else {
+                myPopupMusic.style.display = "none";
+                var audio = document.getElementById("audio");
+                audio.play();
+                drawheart();
+            }
+        }
+
+        function drawheart() {
+            const text = "Hello An. Happy Birthday, wish you all the best!"; // The text to be typed out
+            const delay = 100; // The delay between each character being typed out
+            const typingEffect = document.getElementById("typing-effect"); // The element to apply the typing effect to
+
+            for (let i = 0; i < text.length; i++) {
+                setTimeout(() => {
+                    typingEffect.textContent += text[i];
+                }, i * delay);
+            }
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(60, 1, 1, 1000);
+            camera.position.set(0, 12, 100).setLength(150);
+            const renderer = new THREE.WebGLRenderer({
+                antialias: true
+            });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setPixelRatio(3);
+            const canvas = renderer.domElement;
+            document.body.appendChild(canvas);
+
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableZoom = false;
+            controls.enablePan = false;
+            controls.update();
+
+            const xSize = 50;
+            const ySize = 50;
+            const zSize = 50;
+            const density = 3;
+            const nParticles = xSize * ySize * zSize * density;
+
+            const positions = [];
+            const speed = [];
+            const sign = [];
+
+            for (let i = 0; i < nParticles; i++) {
+                positions.push(new THREE.Vector3(Math.random(), Math.random(), Math.random()).multiplyScalar(100));
+                speed.push(Math.random() * 10 + 2);
+            }
+
+            const pointsGeometry = new THREE.BufferGeometry().setFromPoints(positions);
+            pointsGeometry.addAttribute("speed", new THREE.BufferAttribute(new Float32Array(speed), 1));
+            pointsGeometry.center();
+
+            const points = new THREE.Points(
+                pointsGeometry,
+                new THREE.ShaderMaterial({
+                    uniforms: {
+                        time: {
+                            value: 0
+                        },
+                        size: {
+                            value: 0.9
+                        },
+                        ratio: {
+                            value: window.devicePixelRatio
+                        }
+                    },
+                    vertexShader: `
+            #define PI 3.1415926  
+            uniform float time;
+            uniform float size;
+            uniform float ratio;
+            attribute float speed;
+            varying vec3 vC;
+            varying float vDiscard;
+       
+            void main(){
+                vec3 pos = position;
+                pos.y = mod(pos.y - 0.5*speed * time, 100.) - 50.;
+                pos.x = mod(pos.x - (pos.x/abs(pos.x))*speed * time, 100.) - 50.;
+                
+    
+                vec3 h = pos / 2.5;
+                h.y = -2.0 + 1.2 * h.y - abs(h.x) * sqrt(max((20. - abs(h.x)) / 15., 0.));
+                h.z = h.z * (2. - h.y / 15.);
+                float pLimit = 0.875;
+                float nLimit = -pLimit;
+                float nullPoint = 0.5;
+                float scaledT = time * 0.5;
+                float dt = scaledT - pLimit * ( 2. * floor( scaledT / (pLimit* 2.)) + 7.00318);
+                float r = 15. + 1.8*pow(sin(2. * PI * dt), 4.);
+                float dDyn = length(h) - r;  
+                float dConst = length(h) - 15.; 
+                vC = vec3(247./ 255., 82. / 255., 115. / 255.);   // color      
+                if (dConst > -0.2) vC = vec3(237. / 255., 166. / 255., 180. / 255.);
+                // vC = c;
+                pos = pos - pos / length(pos) * (dDyn) * 2.5;
+                vec3 vPos = pos;
+                vDiscard = dConst > 0. || dConst < -1.0 ? 1. : 0.;
+                vec4 mvPosition = modelViewMatrix * vec4( pos, 1.0 );
+                gl_PointSize = sqrt(length(pos)/30.) * size * ( 300.0 / -mvPosition.z ) * ratio;
+                gl_Position = projectionMatrix * mvPosition;
+            }
+        `,
+                    fragmentShader: `
+    
+          varying vec3 vC;
+          varying float vDiscard;
+         
+          void main(){
+    
+            if ( vDiscard >= 0.5 ) {discard;}
+            if (length(gl_PointCoord - 0.5) > 0.5) {discard;}
+            gl_FragColor = vec4( vC, 1.0);
+          }
+        `
+                })
+            );
+            scene.add(points);
+            const clock = new THREE.Clock();
+            let time = 0;
+
+            renderer.setAnimationLoop(() => {
+                if (resize(renderer)) {
+                    camera.aspect = canvas.clientWidth / canvas.clientHeight;
+                    camera.updateProjectionMatrix();
+                }
+                time += clock.getDelta();
+                //scene.rotation.y = time * 0.25;
+                points.material.uniforms.time.value = time;
+                renderer.render(scene, camera);
+            });
+
+            function resize(renderer) {
+                const canvas = renderer.domElement;
+                const width = canvas.clientWidth;
+                const height = canvas.clientHeight;
+                const needResize = canvas.width !== width || canvas.height !== height;
+                if (needResize) {
+                    renderer.setSize(width, height, false);
+                }
+                return needResize;
+            }
+        }
+
+    </script>
+</body>
+
+</html>

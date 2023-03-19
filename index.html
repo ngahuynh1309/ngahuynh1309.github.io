@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#">
+
+<head>
+    <meta charset="UTF-8">
+    <meta property="og:title" content="Birthday Gift" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image"
+        content="https://www.pngkey.com/png/detail/364-3648697_anime-birthday-cake-drawing-birthday-cake-chibi.png" />
+
+    <title>Birthday Gift</title>
+    <link rel="stylesheet" type="text/css" href="login_style.css">
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <audio id="myAudio">
+        <source src="ShiNi_MongNhien.mp3" type="audio/mpeg">
+    </audio>
+    <div class="container">
+        <h1>FOR <em>Nguyen Duc An</em> ONLY</h1>
+        <p>Fill in the blanks below to see the magic!</p>
+        <form id="loginForm">
+            <label for="username">The first day we entered this relationship:</label>
+            <input type="date" id="username" name="username" placeholder="Choose a date">
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="The first 14 numbers of the Pi (Ex: 3.1415...)">
+            <button type="reset" onclick="validate()">Submit</button>
+        </form>
+    </div>
+
+    <div class="popup" id="myPopup1">
+        <div id="myPopupContent">
+            <h2>Login Successfully</h2>
+            <p>Click here to see your 1st gift...</p>
+
+        </div>
+    </div>
+
+    <div class="popup" id="myPopup0">
+        <div id="myPopupContent">
+            <h2>Dude. You are not An. Go away!</h2>
+        </div>
+    </div>
+
+    <div class="popup" id="myPopup2">
+        <div id="myPopupContent">
+            <h2>Oh I forgot, the password is actually the first 14 numbers of the e (Ex: 2.71...) :33</h2>
+            <img src="./images/cat.png" alt="hehehe">
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
